@@ -12,17 +12,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.oolong.wordguess.ui.Answer
+import com.oolong.wordguess.ui.BoxState
 
 
 /*
 * This composable draw the box and letter for game board.
+*
+* TODO Change border color, fill color according to answers [BoxState].
 * */
 @Composable
 fun LetterBox(
     modifier: Modifier,
     borderColor: Color,
     backgroundColor: Color,
-    letter: String,
+    answer: Answer,
     letterColor: Color
 ){
     Box(
@@ -33,7 +37,7 @@ fun LetterBox(
         contentAlignment = Alignment.Center
     ){
         Text(
-            text = letter.uppercase(),
+            text = answer.letter.uppercase(),
             color = letterColor
         )
     }
@@ -47,7 +51,7 @@ fun LetterBoxPreview(){
         modifier = Modifier,
         borderColor = Color.Black,
         backgroundColor = Color.White,
-        letter = "d",
+        answer = Answer("d", BoxState.WAITING),
         letterColor = Color.Black
     )
 }

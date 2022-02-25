@@ -16,6 +16,7 @@ import com.oolong.wordguess.ui.game_screen.KeyboardButtonGameState
 * */
 @Composable
 fun KeyboardButton(
+    modifier:Modifier = Modifier,
     letter: String,
     state: KeyboardButtonGameState,
     onClick: () -> Unit
@@ -53,7 +54,7 @@ fun KeyboardButton(
         backgroundColor = backgroundColor,
     )
     TextButton(
-        modifier = Modifier
+        modifier = modifier
             .size(width = 32.dp, height = 64.dp),
         colors = buttonColors,
         onClick = {

@@ -19,7 +19,7 @@ fun EnglishKeyboard(
     val letters = arrayOf(
         arrayOf("q", "w", "e", "r", "t", "y", "u", "i", "o", "p"),
         arrayOf("a", "s", "d", "f", "g", "h", "j", "k", "l"),
-        arrayOf("z", "x", "c", "v", "b", "n", "m")
+        arrayOf("enter", "z", "x", "c", "v", "b", "n", "m", "remove")
     )
     
     Column(
@@ -37,11 +37,28 @@ fun EnglishKeyboard(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 for (letter in row){
-                    KeyboardButton(
-                        letter = letter,
-                        state = state,
-                        onClick = onClick
-                    )
+                    when (letter) {
+                        "enter" -> {
+                            EnterKeyboardButton(
+                                state = state,
+                                onClick = onClick
+                            )
+                        }
+                        "remove" -> {
+                            RemoveKeyboardButton(
+                                state = state,
+                                onClick = onClick
+                            )
+                        }
+                        else -> {
+                            KeyboardButton(
+                                letter = letter,
+                                state = state,
+                                onClick = onClick
+                            )
+                        }
+                    }
+
                 }
             }
         }

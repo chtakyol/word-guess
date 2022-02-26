@@ -14,7 +14,7 @@ enum class KeyboardButtonGameState{
 }
 
 enum class BoxState {
-    WAITING, ENTERED, EVALUATED_INCLUDED, EVALUATED_CORRECT
+    WAITING, ENTERED, EVALUATED_INCLUDED, EVALUATED_NOT_INCLUDED, EVALUATED_CORRECT
 }
 
 class GameScreenViewModel : ViewModel() {

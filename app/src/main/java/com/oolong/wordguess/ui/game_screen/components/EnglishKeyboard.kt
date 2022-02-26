@@ -14,7 +14,9 @@ import com.oolong.wordguess.ui.game_screen.KeyboardButtonGameState
 @Composable
 fun EnglishKeyboard(
     state: KeyboardButtonGameState,
-    onClick: () -> Unit
+    onEnterPressed: () -> Unit,
+    onBackspacePressed: () -> Unit,
+    onClick: (String) -> Unit
 ){
     val letters = arrayOf(
         arrayOf("q", "w", "e", "r", "t", "y", "u", "i", "o", "p"),
@@ -41,24 +43,24 @@ fun EnglishKeyboard(
                         "enter" -> {
                             EnterKeyboardButton(
                                 state = state,
-                                onClick = onClick
+                                onClick = onEnterPressed
                             )
                         }
                         "remove" -> {
                             RemoveKeyboardButton(
                                 state = state,
-                                onClick = onClick
+                                onClick = onBackspacePressed
                             )
                         }
                         else -> {
                             KeyboardButton(
                                 letter = letter,
                                 state = state,
-                                onClick = onClick
-                            )
+                            ){
+                                onClick(letter)
+                            }
                         }
                     }
-
                 }
             }
         }
@@ -68,5 +70,9 @@ fun EnglishKeyboard(
 @Composable
 @Preview
 fun PreviewKeyboard(){
-    EnglishKeyboard(state = KeyboardButtonGameState.DEFAULT){}
+    EnglishKeyboard(
+        state = KeyboardButtonGameState.DEFAULT,
+        onEnterPressed = {},
+        onBackspacePressed = {}
+    ){}
 }

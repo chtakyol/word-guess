@@ -4,19 +4,23 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.oolong.wordguess.ui.Answer
-import com.oolong.wordguess.ui.BoxState
+import com.oolong.wordguess.ui.game_screen.GameScreenViewModel
 
 /*
 * Board holds the guesses.
 */
 @Composable
 fun Board(
-    answerList: List<List<Answer>>
+    answerList: SnapshotStateList<Answer>
 ){
     Column(
     ) {
@@ -25,71 +29,30 @@ fun Board(
                 modifier = Modifier
             ){
                 for (j in 0..4) {
+                    val answer = try {
+                        answerList[j + 5*i]
+                    } catch (e: IndexOutOfBoundsException){
+                        Answer()
+                    }
                     item {
                         LetterBox(
                             modifier = Modifier
                                 .padding(2.dp),
                             borderColor = Color.Black,
                             backgroundColor = Color.White,
-                            answer = answerList[i][j],
+                            answer = answer,
                             letterColor = Color.Black
                         )
                     }
                 }
             }
         }
-
     }
 }
 
 @Composable
 @Preview(showBackground = true)
 fun BoardPreview(){
-    val l = listOf<List<Answer>>(
-        listOf(
-            Answer("a", BoxState.WAITING),
-            Answer("a", BoxState.WAITING),
-            Answer("a", BoxState.WAITING),
-            Answer("a", BoxState.WAITING),
-            Answer("a", BoxState.WAITING),
-            ),
-        listOf(
-            Answer("n", BoxState.WAITING),
-            Answer("n", BoxState.WAITING),
-            Answer("n", BoxState.WAITING),
-            Answer("n", BoxState.WAITING),
-            Answer("n", BoxState.WAITING),
-        ),
-        listOf(
-            Answer("a", BoxState.WAITING),
-            Answer("a", BoxState.WAITING),
-            Answer("a", BoxState.WAITING),
-            Answer("a", BoxState.WAITING),
-            Answer("a", BoxState.WAITING),
-        ),
-        listOf(
-            Answer("a", BoxState.WAITING),
-            Answer("a", BoxState.WAITING),
-            Answer("a", BoxState.WAITING),
-            Answer("a", BoxState.WAITING),
-            Answer("a", BoxState.WAITING),
-        ),
-        listOf(
-            Answer("a", BoxState.WAITING),
-            Answer("a", BoxState.WAITING),
-            Answer("a", BoxState.WAITING),
-            Answer("a", BoxState.WAITING),
-            Answer("a", BoxState.WAITING),
-        ),
-        listOf(
-            Answer("a", BoxState.WAITING),
-            Answer("a", BoxState.WAITING),
-            Answer("a", BoxState.WAITING),
-            Answer("a", BoxState.WAITING),
-            Answer("a", BoxState.WAITING),
-        )
-    )
-
-
-    Board(answerList = l)
+    val viewModel = GameScreenViewModel()
+    Board(answerList = viewModel.answerList)
 }

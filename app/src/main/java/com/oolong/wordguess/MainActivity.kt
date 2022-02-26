@@ -10,11 +10,14 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.oolong.wordguess.ui.game_screen.GameScreen
+import com.oolong.wordguess.ui.game_screen.GameScreenViewModel
 import com.oolong.wordguess.ui.theme.WordGuessTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val viewModel = GameScreenViewModel()
         setContent {
             WordGuessTheme {
                 // A surface container using the 'background' color from the theme
@@ -22,22 +25,16 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    GameScreen(viewModel = viewModel)
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     WordGuessTheme {
-        Greeting("Android")
     }
 }

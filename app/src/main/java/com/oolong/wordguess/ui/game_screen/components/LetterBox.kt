@@ -6,15 +6,14 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.oolong.wordguess.ui.Answer
-import com.oolong.wordguess.ui.BoxState
-
+import com.oolong.wordguess.ui.game_screen.BoxState
 
 /*
 * This composable draw the box and letter for game board.
@@ -51,7 +50,7 @@ fun LetterBoxPreview(){
         modifier = Modifier,
         borderColor = Color.Black,
         backgroundColor = Color.White,
-        answer = Answer("d", BoxState.WAITING),
+        answer = Answer("s", BoxState.WAITING),
         letterColor = Color.Black
     )
 }

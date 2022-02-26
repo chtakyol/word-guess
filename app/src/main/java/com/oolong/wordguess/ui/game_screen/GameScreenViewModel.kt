@@ -20,6 +20,9 @@ enum class BoxState {
 class GameScreenViewModel : ViewModel() {
     lateinit var currentWord: String
 
+    private var maxRowIndex = 6
+    private var maxColumnIndex = 4
+
     private var rowIndex = mutableStateOf(0)
     private var columnIndex = mutableStateOf(0)
 
@@ -41,10 +44,16 @@ class GameScreenViewModel : ViewModel() {
         return false
     }
 
-    fun onCustomKeyboardButtonClick(letter: String){
-        answerList.add(Answer(letter, BoxState.WAITING))
-        columnIndex.value++
-        debugBoardList()
+    fun onCustomKeyboardButtonPress(letter: String){
+        if (columnIndex.value <= maxColumnIndex){
+            answerList.add(Answer(letter, BoxState.WAITING))
+            columnIndex.value++
+        }
+    }
+
+    fun onEnterButtonPress(){
+        columnIndex.value = 0
+        rowIndex.value++
     }
 
     private fun debugBoardList(){

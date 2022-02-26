@@ -7,7 +7,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.oolong.wordguess.ui.Answer
 import com.oolong.wordguess.ui.game_screen.components.Board
 import com.oolong.wordguess.ui.game_screen.components.EnglishKeyboard
 
@@ -26,9 +25,15 @@ fun GameScreen(
         )
 
         EnglishKeyboard(
-            state = KeyboardButtonGameState.DEFAULT
+            state = KeyboardButtonGameState.DEFAULT,
+            onEnterPressed = {
+                viewModel.onEnterButtonPress()
+            },
+            onBackspacePressed = {
+
+            }
         ) {
-            viewModel.onCustomKeyboardButtonClick(it)
+            viewModel.onCustomKeyboardButtonPress(it)
         }
     }
 }

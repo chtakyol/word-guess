@@ -19,6 +19,7 @@ enum class BoxState {
 
 class GameScreenViewModel : ViewModel() {
     lateinit var currentWord: String
+    lateinit var playerWord: String
 
     private var maxRowIndex = 6
     private var maxColumnIndex = 4
@@ -30,6 +31,7 @@ class GameScreenViewModel : ViewModel() {
 
     private fun getNextWord(){
         currentWord = englishWordsList.random()
+        Log.d("GameScreen", "Current word is $currentWord.")
     }
 
     init {
@@ -37,10 +39,13 @@ class GameScreenViewModel : ViewModel() {
     }
 
     private fun isUserWordCorrect(playerWord: String): Boolean {
+        Log.d("GameScreen", "Player word is $playerWord.")
         if (playerWord.equals(currentWord, true)) {
             // score increase
+            Log.d("GameScreen", "TRUE!")
             return true
         }
+        Log.d("GameScreen", "FALSE!")
         return false
     }
 
@@ -52,8 +57,29 @@ class GameScreenViewModel : ViewModel() {
     }
 
     fun onEnterButtonPress(){
-        columnIndex.value = 0
-        rowIndex.value++
+        if (rowIndex.value < maxRowIndex){
+            if (columnIndex.value % maxColumnIndex == 1){
+                playerWord = constructWord() // This method depends on rowIndex value, so call before assign.
+                rowIndex.value++
+                columnIndex.value = 0
+                isUserWordCorrect(playerWord = playerWord)
+            } else {
+                // We can show "Pls finish your word".
+            }
+        } else {
+            // Player will lost
+        }
+    }
+
+    private fun constructWord(): String{
+        val start = 5 * rowIndex.value
+        val end = 5 * rowIndex.value + maxColumnIndex
+        val tempList = mutableListOf<String>()
+        for(answer in answerList.slice(start..end)){
+            tempList.add(answer.letter)
+        }
+        return tempList.joinToString("")
+
     }
 
     private fun debugBoardList(){

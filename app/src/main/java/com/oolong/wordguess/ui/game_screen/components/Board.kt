@@ -38,10 +38,7 @@ fun Board(
                         LetterBox(
                             modifier = Modifier
                                 .padding(2.dp),
-                            borderColor = Color.Black,
-                            backgroundColor = Color.White,
-                            answer = answer,
-                            letterColor = Color.Black
+                            answer = answer
                         )
                     }
                 }

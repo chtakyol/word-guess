@@ -6,4 +6,6 @@ package com.oolong.wordguess
 val englishWordsList: List<String> =
     listOf(
         "abcda",
+        "aaaaa",
+        "bbbbb"
     )

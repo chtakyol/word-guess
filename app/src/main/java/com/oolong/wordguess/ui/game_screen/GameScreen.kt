@@ -30,7 +30,7 @@ fun GameScreen(
                 viewModel.onEnterButtonPress()
             },
             onBackspacePressed = {
-
+                viewModel.onBackspacePressed()
             }
         ) {
             viewModel.onCustomKeyboardButtonPress(it)

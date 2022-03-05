@@ -145,19 +145,30 @@ class GameScreenViewModel : ViewModel() {
     fun onEnterButtonPress(){
         if (rowIndex.value < maxRowIndex){
             if (columnIndex.value % maxColumnIndex == 1){
-                playerWord = constructWord() // This method depends on rowIndex value, so call before assign.
-                compareUserWord(playerWord = playerWord) //This method depends on rowIndex, so call before assign.
-                rowIndex.value++
-                columnIndex.value = 0
+                playerWord = constructPlayerWord() // This method depends on rowIndex value, so call before assign.
+                if (englishWordsList.contains(playerWord)) {
+                    compareUserWord(playerWord = playerWord) //This method depends on rowIndex, so call before assign.
+                    rowIndex.value++
+                    columnIndex.value = 0
+                } else {
+                    Log.d("GameScreen", "It's not a word!")
+                }
             } else {
-                // We can show "Pls finish your word".
+                Log.d("GameScreen", "Missing letter!")
             }
         } else {
-            // Player will lost
+            Log.d("GameScreen", "Lost!")
         }
     }
 
-    private fun constructWord(): String{
+    fun onBackspacePressed() {
+        if (columnIndex.value > 0){
+            answerList.removeLast()
+            columnIndex.value--
+        }
+    }
+
+    private fun constructPlayerWord(): String{
         val start = 5 * rowIndex.value
         val end = 5 * rowIndex.value + maxColumnIndex
         val tempList = mutableListOf<String>()
@@ -165,11 +176,5 @@ class GameScreenViewModel : ViewModel() {
             tempList.add(answer.letter)
         }
         return tempList.joinToString("")
-    }
-
-    private fun debugBoardList(){
-        for (ans in answerList){
-            Log.d("GameScreen", ans.letter)
-        }
     }
 }

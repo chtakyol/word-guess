@@ -15,6 +15,12 @@ enum class BoxState {
     WAITING, ENTERED, EVALUATED_INCLUDED, EVALUATED_NOT_INCLUDED, EVALUATED_CORRECT
 }
 
+class CompareObj (
+    val index: Int,
+    val first: Char,
+    var second: BoxState
+    )
+
 class GameScreenViewModel : ViewModel() {
     lateinit var currentWord: String
     lateinit var playerWord: String
@@ -38,26 +44,67 @@ class GameScreenViewModel : ViewModel() {
 
     private fun compareUserWord(playerWord: String): Boolean {
         Log.d("GameScreen", "Player word is $playerWord.")
-        val tempPlayerWord = playerWord
-        for (playerLetter in tempPlayerWord){
-            if (currentWord.contains(playerLetter)){
-                // EVALUATED_CORRECT or EVALUATED_INCLUDED
-                if (tempPlayerWord.indexOf(playerLetter) == currentWord.indexOf(playerLetter)){
-                    // EVALUATED_CORRECT
-                    val indexToUpdate = getCurrentIndex(playerWord.indexOf(playerLetter))
-//                    Log.d("GameScreen", "The index of ${playerWord.indexOf(playerLetter).toString()} is true but $indexToUpdate")
-                    updateAnswerListsBoxState(indexToUpdate, BoxState.EVALUATED_CORRECT)
-                } else {
-                    // EVALUATED_INCLUDED
-                    val indexToUpdate = getCurrentIndex(playerWord.indexOf(playerLetter))
-//                    Log.d("GameScreen", "The index of ${playerWord.indexOf(playerLetter).toString()} is included $indexToUpdate")
-                    updateAnswerListsBoxState(indexToUpdate, BoxState.EVALUATED_INCLUDED)
+        val boxStateList = mutableListOf(
+            BoxState.WAITING, BoxState.WAITING, BoxState.WAITING,
+            BoxState.WAITING, BoxState.WAITING
+        )
+        val currentWordCompareList = mutableListOf(
+            CompareObj(0, currentWord[0], BoxState.WAITING),
+            CompareObj(1, currentWord[1], BoxState.WAITING),
+            CompareObj(2, currentWord[2], BoxState.WAITING),
+            CompareObj(3, currentWord[3], BoxState.WAITING),
+            CompareObj(4, currentWord[4], BoxState.WAITING),
+        )
+
+        val playerWordCompareList = mutableListOf(
+            CompareObj(0, playerWord[0], BoxState.WAITING),
+            CompareObj(1, playerWord[1], BoxState.WAITING),
+            CompareObj(2, playerWord[2], BoxState.WAITING),
+            CompareObj(3, playerWord[3], BoxState.WAITING),
+            CompareObj(4, playerWord[4], BoxState.WAITING),
+        )
+
+        // For correct letters
+        for (i in 0..4) {
+            for (item in currentWordCompareList) {
+                if (playerWord[i] == item.first && i == item.index) {
+                    boxStateList[i] = BoxState.EVALUATED_CORRECT
+                    playerWordCompareList[i].second = BoxState.EVALUATED_CORRECT
+                    currentWordCompareList[i].second = BoxState.EVALUATED_CORRECT
+                    item.second = BoxState.EVALUATED_CORRECT
                 }
-            } else {
-                // EVALUATED_NOT_INCLUDED
-                val indexToUpdate = getCurrentIndex(playerWord.indexOf(playerLetter))
-                updateAnswerListsBoxState(indexToUpdate, BoxState.EVALUATED_NOT_INCLUDED)
             }
+            // For included letters
+            for (item in currentWordCompareList){
+                if (
+                    playerWordCompareList[i].second == BoxState.WAITING
+                    && playerWord[i] == item.first
+                    && item.second == BoxState.WAITING
+                ) {
+                    boxStateList[i] = BoxState.EVALUATED_INCLUDED
+                    playerWordCompareList[i].second = BoxState.EVALUATED_INCLUDED
+                    item.second = BoxState.EVALUATED_INCLUDED
+                }
+            }
+            // For wrong letters
+            for (item in currentWordCompareList){
+                if (
+                    playerWordCompareList[i].second == BoxState.WAITING
+                    && playerWord[i] != item.first
+                    && item.second == BoxState.WAITING
+                ) {
+                    boxStateList[i] = BoxState.EVALUATED_NOT_INCLUDED
+                    playerWordCompareList[i].second = BoxState.EVALUATED_NOT_INCLUDED
+                    item.second = BoxState.EVALUATED_NOT_INCLUDED
+                }
+            }
+        }
+        // Paint the board
+        for (i in 0..4) {
+            updateAnswerListsBoxState(
+                getCurrentIndex(i),
+                boxStateList[i]
+            )
         }
 
         if (playerWord.equals(currentWord, true)) {
@@ -67,6 +114,14 @@ class GameScreenViewModel : ViewModel() {
         }
         Log.d("GameScreen", "FALSE!")
         return false
+    }
+
+    private fun makeWordFromList(list: MutableList<CompareObj>): String {
+        var word = ""
+        for (item in list) {
+            word += item.first
+        }
+        return word
     }
 
     private fun getCurrentIndex(scanColumnIndex: Int): Int {

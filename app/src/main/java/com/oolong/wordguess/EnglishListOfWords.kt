@@ -5,5 +5,5 @@ package com.oolong.wordguess
 * */
 val englishWordsList: List<String> =
     listOf(
-        "abcde",
+        "abcda",
     )

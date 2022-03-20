@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    GameScreen(viewModel = viewModel)
+                    WordGuessNavHost(viewModel = viewModel)
                 }
             }
         }

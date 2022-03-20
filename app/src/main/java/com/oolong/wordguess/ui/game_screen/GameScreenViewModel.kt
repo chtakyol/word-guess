@@ -15,6 +15,10 @@ enum class BoxState {
     WAITING, ENTERED, EVALUATED_INCLUDED, EVALUATED_NOT_INCLUDED, EVALUATED_CORRECT
 }
 
+enum class ResultOnEnter {
+    END_OF_BOARD, TRUE, INCOMPLETE, NOT_A_WORD
+}
+
 class CompareObj (
     val index: Int,
     val first: Char,
@@ -33,13 +37,25 @@ class GameScreenViewModel : ViewModel() {
 
     var answerList = mutableStateListOf<Answer>()
 
+    var resultOnEnter = mutableStateOf(ResultOnEnter.INCOMPLETE)
+
     private fun getNextWord(){
         currentWord = englishWordsList.random()
         Log.d("GameScreen", "Current word is $currentWord.")
+
+
     }
 
     init {
         getNextWord()
+    }
+
+    fun clearGameBoard(){
+        resultOnEnter.value = ResultOnEnter.INCOMPLETE
+        playerWord = ""
+        rowIndex.value = 0
+        columnIndex.value = 0
+        answerList.clear()
     }
 
     private fun compareUserWord(playerWord: String): Boolean {
@@ -109,10 +125,8 @@ class GameScreenViewModel : ViewModel() {
 
         if (playerWord.equals(currentWord, true)) {
             // score increase
-            Log.d("GameScreen", "TRUE!")
             return true
         }
-        Log.d("GameScreen", "FALSE!")
         return false
     }
 
@@ -142,23 +156,31 @@ class GameScreenViewModel : ViewModel() {
         }
     }
 
-    fun onEnterButtonPress(){
-        if (rowIndex.value < maxRowIndex){
+    fun onEnterButtonPress() : ResultOnEnter{
+        if (rowIndex.value < maxRowIndex - 1){
             if (columnIndex.value % maxColumnIndex == 1){
                 playerWord = constructPlayerWord() // This method depends on rowIndex value, so call before assign.
                 if (englishWordsList.contains(playerWord)) {
-                    compareUserWord(playerWord = playerWord) //This method depends on rowIndex, so call before assign.
+                    if (compareUserWord(playerWord = playerWord)) { //This method depends on rowIndex, so call before assign.
+                        resultOnEnter.value = ResultOnEnter.TRUE
+                        getNextWord()
+                    }
                     rowIndex.value++
                     columnIndex.value = 0
                 } else {
-                    Log.d("GameScreen", "It's not a word!")
+                    // Word list does not contain user word.
+                    resultOnEnter.value = ResultOnEnter.NOT_A_WORD
                 }
             } else {
-                Log.d("GameScreen", "Missing letter!")
+                // User word is incomplete.
+                resultOnEnter.value = ResultOnEnter.INCOMPLETE
             }
         } else {
-            Log.d("GameScreen", "Lost!")
+            // User word is false and end of board.
+            resultOnEnter.value = ResultOnEnter.END_OF_BOARD
+            getNextWord()
         }
+        return resultOnEnter.value
     }
 
     fun onBackspacePressed() {

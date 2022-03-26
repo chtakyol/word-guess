@@ -31,6 +31,10 @@ fun GameScreen(
             answerList = viewModel.answerList
         )
 
+        Text(
+            text = viewModel.currentWord
+        )
+
         EnglishKeyboard(
             stateMap = viewModel.keyboardButtonGameStateMap,
             onEnterPressed = {

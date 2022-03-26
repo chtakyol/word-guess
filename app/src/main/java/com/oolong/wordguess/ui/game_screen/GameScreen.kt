@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,7 +32,7 @@ fun GameScreen(
         )
 
         EnglishKeyboard(
-            state = KeyboardButtonGameState.DEFAULT,
+            stateMap = viewModel.keyboardButtonGameStateMap,
             onEnterPressed = {
                 when (viewModel.onEnterButtonPress()){
                     ResultOnEnter.NOT_A_WORD ->{
@@ -63,7 +64,7 @@ fun GameScreen(
 }
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 fun PreviewGameScreen() {
     val viewModel = GameScreenViewModel()
     val navController = rememberNavController()

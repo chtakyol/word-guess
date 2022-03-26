@@ -2,6 +2,7 @@ package com.oolong.wordguess.ui.game_screen
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.oolong.wordguess.englishWordsList
@@ -35,19 +36,32 @@ class GameScreenViewModel : ViewModel() {
     private var rowIndex = mutableStateOf(0)
     private var columnIndex = mutableStateOf(0)
 
+    var resultOnEnter = mutableStateOf(ResultOnEnter.INCOMPLETE)
+
     var answerList = mutableStateListOf<Answer>()
 
-    var resultOnEnter = mutableStateOf(ResultOnEnter.INCOMPLETE)
+    var keyboardButtonGameStateMap = mutableStateMapOf<String, KeyboardButtonGameState>()
 
     private fun getNextWord(){
         currentWord = englishWordsList.random()
         Log.d("GameScreen", "Current word is $currentWord.")
-
-
     }
 
     init {
         getNextWord()
+    }
+
+    private fun addKeyboardButtonGameState(playerWord: String){
+        for (i in 0..4) {
+            if (playerWord[i] in currentWord && keyboardButtonGameStateMap[playerWord[i].toString()] != KeyboardButtonGameState.RIGHT){
+                keyboardButtonGameStateMap[playerWord[i].toString()] = KeyboardButtonGameState.INCLUDED
+            } else {
+                keyboardButtonGameStateMap[playerWord[i].toString()] = KeyboardButtonGameState.WRONG
+            }
+            if (playerWord[i] == currentWord[i]){
+                keyboardButtonGameStateMap[playerWord[i].toString()] = KeyboardButtonGameState.RIGHT
+            }
+        }
     }
 
     fun clearGameBoard(){
@@ -56,6 +70,7 @@ class GameScreenViewModel : ViewModel() {
         rowIndex.value = 0
         columnIndex.value = 0
         answerList.clear()
+        keyboardButtonGameStateMap.clear()
     }
 
     private fun compareUserWord(playerWord: String): Boolean {
@@ -180,6 +195,7 @@ class GameScreenViewModel : ViewModel() {
             resultOnEnter.value = ResultOnEnter.END_OF_BOARD
             getNextWord()
         }
+        addKeyboardButtonGameState(playerWord)
         return resultOnEnter.value
     }
 

@@ -2,6 +2,9 @@ package com.oolong.wordguess.ui.game_screen.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateMap
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -13,7 +16,7 @@ import com.oolong.wordguess.ui.game_screen.KeyboardButtonGameState
 * */
 @Composable
 fun EnglishKeyboard(
-    state: KeyboardButtonGameState,
+    stateMap: SnapshotStateMap<String, KeyboardButtonGameState>,
     onEnterPressed: () -> Unit,
     onBackspacePressed: () -> Unit,
     onClick: (String) -> Unit
@@ -42,23 +45,24 @@ fun EnglishKeyboard(
                     when (letter) {
                         "enter" -> {
                             EnterKeyboardButton(
-                                state = state,
+                                state = KeyboardButtonGameState.DEFAULT,
                                 onClick = onEnterPressed
                             )
                         }
                         "remove" -> {
                             RemoveKeyboardButton(
-                                state = state,
+                                state = KeyboardButtonGameState.DEFAULT,
                                 onClick = onBackspacePressed
                             )
                         }
                         else -> {
                             KeyboardButton(
                                 letter = letter,
-                                state = state,
+                                state = if (stateMap.containsKey(letter)) stateMap[letter] as KeyboardButtonGameState  else KeyboardButtonGameState.DEFAULT,
                             ){
                                 onClick(letter)
                             }
+
                         }
                     }
                 }
@@ -70,8 +74,9 @@ fun EnglishKeyboard(
 @Composable
 @Preview
 fun PreviewKeyboard(){
+    val keyboardButtonGameStateMap = remember{mutableStateMapOf("a" to KeyboardButtonGameState.RIGHT)}
     EnglishKeyboard(
-        state = KeyboardButtonGameState.DEFAULT,
+        stateMap = keyboardButtonGameStateMap,
         onEnterPressed = {},
         onBackspacePressed = {}
     ){}

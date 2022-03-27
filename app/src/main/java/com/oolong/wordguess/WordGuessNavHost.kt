@@ -22,14 +22,32 @@ fun WordGuessNavHost(
             GameScreen(viewModel = viewModel, navController = navController)
         }
         composable(
-            route = "result_screen/{result}",
-            arguments = listOf(navArgument("result"){
-                type = NavType.StringType
-            })
+            route = "result_screen/{result}/{countOfPlayedGames}/{winPercentage}/{currentStreak}/{maxStreak}",
+            arguments = listOf(
+                navArgument("result"){
+                    type = NavType.StringType
+                },
+                navArgument("countOfPlayedGames"){
+                    type = NavType.IntType
+                },
+                navArgument("winPercentage"){
+                    type = NavType.IntType
+                },
+                navArgument("currentStreak"){
+                    type = NavType.IntType
+                },
+                navArgument("maxStreak"){
+                    type = NavType.IntType
+                }
+            )
         ) {
             ResultScreen(
                 navController = navController,
-                result = it.arguments?.getString("result").toString()
+                result = it.arguments?.getString("result").toString(),
+                countOfPlayerGames = it.arguments?.getInt("countOfPlayedGames"),
+                winPercentage = it.arguments?.getInt("winPercentage"),
+                currentStreak = it.arguments?.getInt("currentStreak"),
+                maxStreak = it.arguments?.getInt("maxStreak")
             )
         }
     }

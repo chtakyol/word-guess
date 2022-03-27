@@ -53,10 +53,12 @@ fun GameScreen(
                     ResultOnEnter.TRUE -> {
                         Log.d("GameScreen", "It's true answer!")
                         viewModel.clearGameBoard()
-                        navController.navigate("result_screen/" + "true")
+                        navController.navigate("result_screen/" + "true/" + viewModel.countOfPlayedGames + "/" + viewModel.winPercentage + "/" + viewModel.currentStreak + "/" + viewModel.maxStreak
+                        )
+                        val s = "result_screen/" + "true/" + viewModel.countOfPlayedGames + "/" + viewModel.winPercentage + "/" + viewModel.currentStreak + "/" + viewModel.maxStreak
+                        Log.d("GameScreen", s)
                     }
                 }
-
             },
             onBackspacePressed = {
                 viewModel.onBackspacePressed()

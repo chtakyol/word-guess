@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.oolong.wordguess.WordGuessNavHost
+import com.oolong.wordguess.ui.result_screen.components.StatisticsFrame
 
 /*
 * This screen will be a static true result screen.
@@ -22,10 +23,15 @@ import com.oolong.wordguess.WordGuessNavHost
 @Composable
 fun ResultScreen(
     navController: NavController,
-    result: String
+    result: String,
+    countOfPlayerGames: Int?,
+    winPercentage: Int?,
+    currentStreak: Int?,
+    maxStreak: Int?
 ) {
-    var buttonText: String = ""
-    var resultText: String = ""
+    var buttonText = ""
+    var resultText = ""
+
     when(result) {
         "true" -> {
             resultText = "Congrats!"
@@ -42,7 +48,12 @@ fun ResultScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
+        StatisticsFrame(
+            countOfPlayedGames = countOfPlayerGames,
+            winPercentage = winPercentage,
+            currentStreak = currentStreak,
+            maxStreak = maxStreak
+        )
         Text(
             text = resultText
         )
@@ -67,6 +78,10 @@ fun PreviewTrueScreen() {
     val result = "true"
     ResultScreen(
         navController = navController,
-        result = result
+        result = result,
+        countOfPlayerGames = 1,
+        winPercentage = 20,
+        currentStreak = 3,
+        maxStreak = 3
     )
 }

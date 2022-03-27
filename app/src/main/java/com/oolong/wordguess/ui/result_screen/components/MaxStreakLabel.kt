@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun MaxStreakLabel(
-    maxStreak: Int
+    maxStreak: Int?
 ){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

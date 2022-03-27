@@ -13,10 +13,10 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun StatisticsFrame(
-    countOfPlayedGames: Int,
-    winPercentage: Int,
-    currentStreak: Int,
-    maxStreak: Int
+    countOfPlayedGames: Int?,
+    winPercentage: Int?,
+    currentStreak: Int?,
+    maxStreak: Int?
 ){
     Column(
         verticalArrangement = Arrangement.Center,
@@ -31,7 +31,6 @@ fun StatisticsFrame(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceAround
         ) {
-
             GameCountLabel(countOfPlayedGames = countOfPlayedGames)
             WinPercentageLabel(winPercentage = winPercentage)
             CurrentStreakLabel(currentStreak = currentStreak)

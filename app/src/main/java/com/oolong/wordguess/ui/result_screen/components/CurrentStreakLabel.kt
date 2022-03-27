@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun CurrentStreakLabel(
-    currentStreak: Int
+    currentStreak: Int?
 ){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

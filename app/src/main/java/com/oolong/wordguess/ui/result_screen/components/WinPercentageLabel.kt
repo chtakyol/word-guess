@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun WinPercentageLabel(
-    winPercentage: Int
+    winPercentage: Int?
 ){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

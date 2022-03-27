@@ -42,6 +42,12 @@ class GameScreenViewModel : ViewModel() {
 
     var keyboardButtonGameStateMap = mutableStateMapOf<String, KeyboardButtonGameState>()
 
+    // Score related variables
+    var countOfPlayedGames = 12
+    var winPercentage = 3
+    var currentStreak = 4
+    var maxStreak = 2
+
     private fun getNextWord(){
         currentWord = englishWordsList.random()
         Log.d("GameScreen", "Current word is $currentWord.")

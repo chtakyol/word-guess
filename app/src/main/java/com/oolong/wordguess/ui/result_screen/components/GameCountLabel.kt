@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun GameCountLabel(
-    countOfPlayedGames: Int
+    countOfPlayedGames: Int?
 ){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
